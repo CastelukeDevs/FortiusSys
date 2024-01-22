@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import {IMainNavProp} from '../Routes/RouteTypes';
-import Icon from '../Components/Common/Icon';
+import Icon from '@Common/Icon';
+import {IMainNavProp} from '@Routes/RouteTypes';
 
 const SignInScreen = ({navigation}: IMainNavProp<'SignInScreen'>) => {
   return (

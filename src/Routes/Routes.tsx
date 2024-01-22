@@ -4,7 +4,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {IMainNav} from './RouteTypes';
-import SignInScreen from '../Screens/SignInScreen';
+
+import SignInScreen from '@Screens/SignInScreen';
 
 const Stack = createNativeStackNavigator<IMainNav>();
 
