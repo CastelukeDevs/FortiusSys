@@ -21,7 +21,7 @@ import Logo from '@Common/Logo';
 import Button from '@Common/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from '@Common/Icon';
-import AttendanceCard from '@Components/AttendanceCard';
+import CheckInCard from '@Components/CheckInCard';
 
 const HomeScreen = () => {
   const inset = useSafeAreaInsets();
@@ -84,7 +84,7 @@ const HomeScreen = () => {
           <View style={{flex: 1}} />
         </View>
         <View style={{paddingHorizontal: Dimens.padding}}>
-          <AttendanceCard />
+          <CheckInCard />
         </View>
       </View>
       <View style={{flex: 1, padding: Dimens.padding, alignItems: 'center'}}>

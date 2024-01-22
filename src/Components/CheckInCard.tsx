@@ -35,7 +35,7 @@ const TimeContainer = (props: {isCheckIn?: boolean}) => {
   );
 };
 
-const AttendanceCard = () => {
+const CheckInCard = () => {
   const date = new Date();
   const currentDateStr = moment(date).format('ddd, DD MMM YYYY');
 
@@ -81,7 +81,7 @@ const AttendanceCard = () => {
   );
 };
 
-export default AttendanceCard;
+export default CheckInCard;
 
 const styles = StyleSheet.create({
   RootComponentContainer: {
