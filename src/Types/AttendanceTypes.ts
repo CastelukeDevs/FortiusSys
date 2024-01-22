@@ -1,17 +1,19 @@
+import {IGeolocation} from './GeolocationTypes';
+
 export type ILocation = {
-  lat: number;
-  lng: number;
-  immediateLocation?: string;
+  latitude: number;
+  longitude: number;
+  geoLocation?: IGeolocation;
 };
 
-export type IAttendanceTime = {
+export type IAttendanceTimeLoc = {
   time: Date;
   location: ILocation;
 };
 
 export type IAttendance = {
   id: string;
-  checkIn: IAttendanceTime;
-  checkOut: IAttendanceTime;
+  checkIn: IAttendanceTimeLoc;
+  checkOut: IAttendanceTimeLoc;
   attendanceTime: Date;
 };

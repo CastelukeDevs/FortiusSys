@@ -6,12 +6,9 @@ import {
   TransformObjectToForm,
   getEndpoint,
 } from './APIUtils';
-import {BASE_URL} from './EndpointPool';
 import {retrieveToken} from '@Utilities/Tools/AsyncStorageUtils';
 
 const APICall = async (endpoint: IEndpoint, options?: IAPIsCallOption) => {
-  axios.defaults.baseURL = BASE_URL;
-
   const selectEndpoint = getEndpoint(endpoint)!;
   const token = await retrieveToken();
 

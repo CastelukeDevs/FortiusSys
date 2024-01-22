@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '@Redux/Store';
@@ -22,6 +22,10 @@ import Button from '@Common/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from '@Common/Icon';
 import CheckInCard from '@Components/CheckInCard';
+import {
+  resetAttendance,
+  selectAttendanceStatus,
+} from '@Redux/Reducers/AttendanceReducer';
 
 const HomeScreen = () => {
   const inset = useSafeAreaInsets();
@@ -30,6 +34,7 @@ const HomeScreen = () => {
   const user = useSelector(selectUser);
   const employee = useSelector(selectUserEmployee);
   const company = useSelector(selectUserCompany);
+  const isSigned = useSelector(selectAttendanceStatus);
 
   useEffect(() => {
     dispatch(statusBarLight());
@@ -38,8 +43,11 @@ const HomeScreen = () => {
     };
   }, []);
 
-  const onSignOut = () => {
+  const onSignOutHandler = () => {
     dispatch(resetUserState());
+  };
+  const onResetHandler = () => {
+    dispatch(resetAttendance());
   };
   return (
     <View style={styles.RootScreenContainer}>
@@ -94,7 +102,8 @@ const HomeScreen = () => {
         <Text style={[ThemeText.SubTitle_Regular]}>Attendance</Text>
       </View>
       <View style={{padding: Dimens.padding}}>
-        <Button label="Sign Out" onPress={onSignOut} />
+        <Button label="Sign Out" onPress={onSignOutHandler} />
+        <Button label="Reset" onPress={onResetHandler} />
       </View>
     </View>
   );

@@ -9,8 +9,9 @@ import {IMainNav} from './RouteTypes';
 import SignInScreen from '@Screens/SignInScreen';
 import HomeScreen from '@Screens/HomeScreen';
 import {isUserReady, selectUserToken} from '@Redux/Reducers/UserReducer';
-import {StatusBar} from 'react-native';
+import {PermissionsAndroid, StatusBar} from 'react-native';
 import {selectStatusBar} from '@Redux/Reducers/DefaultReducer';
+import {androidInitialPermissionCheck} from '@Utilities/Tools/AndroidPermission';
 
 const Stack = createNativeStackNavigator<IMainNav>();
 
@@ -20,6 +21,21 @@ const Routes = () => {
   const barStyle = useSelector(selectStatusBar);
 
   const [auth, setAuth] = useState(false);
+
+  const checkPermission = async () => {
+    const fineLocation = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+    const coarseLocation = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    );
+
+    console.log('permission', {fineLocation, coarseLocation});
+  };
+
+  useEffect(() => {
+    androidInitialPermissionCheck();
+  }, []);
 
   useEffect(() => {
     if (userToken === null || userToken === undefined) {
