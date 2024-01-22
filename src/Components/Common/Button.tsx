@@ -19,6 +19,7 @@ type IButtonPropTypes = {
   icon?: IIconProps;
   disabled?: boolean;
   onLayout?: (event: LayoutChangeEvent) => void;
+  isSmall?: boolean;
 };
 
 //TODO: add disable button function
@@ -43,6 +44,7 @@ const Button = (props: IButtonPropTypes) => {
         currentMode === 'outlined' && styles.ModeOutlined,
         props.style,
         props.disabled && styles.Disabled,
+        props.isSmall && {paddingHorizontal: 16, paddingVertical: 10},
       ]}>
       {props.icon && (
         <Icon
@@ -55,7 +57,9 @@ const Button = (props: IButtonPropTypes) => {
       {props.label && (
         <Text
           style={[
-            ThemeText.Title_SemiBold,
+            !props.isSmall
+              ? ThemeText.Title_SemiBold
+              : ThemeText.SubTitle_Regular,
             styles.LabelText,
             {
               color:

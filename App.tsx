@@ -5,11 +5,6 @@ import ReduxWrapper from '@Redux/ReduxWrapper';
 
 export default () => (
   <ReduxWrapper>
-    <StatusBar
-      translucent
-      backgroundColor="transparent"
-      barStyle="dark-content"
-    />
     <Routes />
   </ReduxWrapper>
 );

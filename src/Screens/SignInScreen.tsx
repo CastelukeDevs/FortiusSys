@@ -1,5 +1,11 @@
-import React, {useRef, useState} from 'react';
-import {StyleSheet, Text, View, TextInput as RNInput} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput as RNInput,
+  StatusBar,
+} from 'react-native';
 import {useAppDispatch} from '@Redux/Store';
 
 import {IMainNavProp} from '@Routes/RouteTypes';
@@ -15,9 +21,18 @@ import Button from '@Common/Button';
 import ValidateString from '@Utilities/Tools/ValidateString';
 import {getUserData} from '@Redux/Reducers/UserReducer';
 import {IIconName} from '@Common/Icon';
+import {statusBarDark, statusBarLight} from '@Redux/Reducers/DefaultReducer';
 
 const SignInScreen = ({navigation}: IMainNavProp<'SignInScreen'>) => {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(statusBarLight());
+    return () => {
+      dispatch(statusBarDark());
+    };
+  }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordSecured, setPasswordSecured] = useState(true);
