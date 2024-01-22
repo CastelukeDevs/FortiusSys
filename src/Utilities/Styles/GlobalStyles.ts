@@ -111,11 +111,11 @@ export const Opacity = {
 
 export const ThemeColor = {
   light: '#ffffff',
-  dark: '#000000',
+  dark: '#111828',
   primary: '#000000',
   active: '#4361EE',
-  inactive: '#000000' + Opacity[50],
-  accent: '#E3362B',
+  inactive: '#000000' + Opacity[30],
+  accent: '#6841C6',
   error: '#ff6347',
   success: '#3cb371',
 } as const;
@@ -127,20 +127,12 @@ export const ThemeColor = {
  */
 
 export const DefaultStyle = StyleSheet.create({
-  ModalRootStyle: {
-    backgroundColor: ThemeColor.dark + Opacity[30],
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  InvisLine: {
+    // height: 2,
+    opacity: 0.2,
+    borderColor: ThemeColor.dark,
+    borderWidth: 1,
   },
-  ModalViewStyle: {
-    backgroundColor: ThemeColor.light,
-    borderRadius: Dimens.padding,
-    padding: Dimens.padding,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  ModalIconStyle: {width: 60, height: 60},
 });
 
 export const ThemeDimension = {
@@ -223,6 +215,11 @@ export const ThemeText = StyleSheet.create({
     color: ThemeColor.dark,
     fontSize: ThemeDimension.fontSize.title,
     fontWeight: 'bold',
+  },
+  Title_SemiBold: {
+    color: ThemeColor.dark,
+    fontSize: ThemeDimension.fontSize.title,
+    fontWeight: '500',
   },
   Title_Light: {
     color: ThemeColor.dark,
