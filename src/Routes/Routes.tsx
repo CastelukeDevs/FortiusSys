@@ -22,8 +22,6 @@ const Routes = () => {
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
-    console.log(userToken);
-
     if (userToken === null || userToken === undefined) {
       setAuth(false);
     } else {
