@@ -111,11 +111,11 @@ export const Opacity = {
 
 export const ThemeColor = {
   light: '#ffffff',
-  dark: '#000000',
+  dark: '#111828',
   primary: '#000000',
   active: '#4361EE',
   inactive: '#000000' + Opacity[50],
-  accent: '#E3362B',
+  accent: '#6841C6',
   error: '#ff6347',
   success: '#3cb371',
 } as const;
@@ -223,6 +223,11 @@ export const ThemeText = StyleSheet.create({
     color: ThemeColor.dark,
     fontSize: ThemeDimension.fontSize.title,
     fontWeight: 'bold',
+  },
+  Title_SemiBold: {
+    color: ThemeColor.dark,
+    fontSize: ThemeDimension.fontSize.title,
+    fontWeight: '500',
   },
   Title_Light: {
     color: ThemeColor.dark,
