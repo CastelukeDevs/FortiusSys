@@ -30,6 +30,12 @@ enum IconList {
   'pencil',
   'person',
   'rocket',
+  'location',
+  'close-circle',
+  'checkmark-circle',
+  'remove-circle',
+  'camera',
+  'id-card',
 }
 
 export type IIconMode = keyof typeof IconMode;

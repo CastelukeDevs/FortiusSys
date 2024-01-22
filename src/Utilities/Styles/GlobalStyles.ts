@@ -114,7 +114,7 @@ export const ThemeColor = {
   dark: '#111828',
   primary: '#000000',
   active: '#4361EE',
-  inactive: '#000000' + Opacity[50],
+  inactive: '#000000' + Opacity[30],
   accent: '#6841C6',
   error: '#ff6347',
   success: '#3cb371',
@@ -127,20 +127,12 @@ export const ThemeColor = {
  */
 
 export const DefaultStyle = StyleSheet.create({
-  ModalRootStyle: {
-    backgroundColor: ThemeColor.dark + Opacity[30],
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  InvisLine: {
+    // height: 2,
+    opacity: 0.2,
+    borderColor: ThemeColor.dark,
+    borderWidth: 1,
   },
-  ModalViewStyle: {
-    backgroundColor: ThemeColor.light,
-    borderRadius: Dimens.padding,
-    padding: Dimens.padding,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  ModalIconStyle: {width: 60, height: 60},
 });
 
 export const ThemeDimension = {

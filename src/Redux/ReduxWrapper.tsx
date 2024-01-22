@@ -6,7 +6,7 @@ import Store from './Store';
 /**
  * Wrapper for redux
  */
-export default ({children}: {children: ReactNode[]}) => (
+export default ({children}: {children: ReactNode[] | ReactNode}) => (
   <Provider store={Store.stores}>
     <PersistGate persistor={Store.persistor}>{children}</PersistGate>
   </Provider>
