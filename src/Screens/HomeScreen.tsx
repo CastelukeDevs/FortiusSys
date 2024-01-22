@@ -92,7 +92,9 @@ const HomeScreen = () => {
           <Icon name="id-card" size={30} color={ThemeColor.accent} />
         </TouchableOpacity>
         <Text style={[ThemeText.SubTitle_Regular]}>Attendance</Text>
-        {/* <Button label="Sign Out" onPress={onSignOut} /> */}
+      </View>
+      <View style={{padding: Dimens.padding}}>
+        <Button label="Sign Out" onPress={onSignOut} />
       </View>
     </View>
   );
