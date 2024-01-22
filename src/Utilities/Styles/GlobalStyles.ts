@@ -131,7 +131,7 @@ export const DefaultStyle = StyleSheet.create({
     // height: 2,
     opacity: 0.2,
     borderColor: ThemeColor.dark,
-    borderWidth: 1,
+    borderTopWidth: 2,
   },
 });
 

@@ -5,6 +5,7 @@ import {IAttendance, IAttendanceTimeLoc} from '@Types/AttendanceTypes';
 export type IAttendanceInitialState = {
   isReady: boolean;
   isCheckedIn: boolean;
+  imageUri?: string;
   checkedInTimeLoc?: IAttendanceTimeLoc;
   lastAttendance?: IAttendance;
   attendanceHistory: IAttendance[];
@@ -38,18 +39,28 @@ const AttendanceReducer = createSlice({
       state.isReady = true;
       const checkOutTimeLoc = action.payload;
       const newID = 'FCSV' + Math.floor(Math.random() * 9999 + 1111).toString();
+      console.log('image uri', state.imageUri);
+
       const newAttendanceRecord: IAttendance = {
         attendanceTime: state.checkedInTimeLoc?.time!,
         checkIn: state.checkedInTimeLoc!,
+        image: state.imageUri,
         checkOut: checkOutTimeLoc,
         id: newID,
       };
       state.checkedInTimeLoc = undefined;
+      state.imageUri = undefined;
       state.lastAttendance = newAttendanceRecord;
       state.attendanceHistory.push(newAttendanceRecord);
     },
     attendanceLoading: state => {
       state.isReady = false;
+    },
+    attendanceReady: state => {
+      state.isReady = true;
+    },
+    setImage: (state, action) => {
+      state.imageUri = action.payload;
     },
   },
 });
@@ -61,6 +72,12 @@ export const {
   selectAttendanceHistory,
   selectLastAttendance,
 } = AttendanceReducer.selectors;
-export const {resetAttendance, checkIn, checkOut, attendanceLoading} =
-  AttendanceReducer.actions;
+export const {
+  resetAttendance,
+  checkIn,
+  checkOut,
+  attendanceLoading,
+  attendanceReady,
+  setImage,
+} = AttendanceReducer.actions;
 export default AttendanceReducer.reducer;

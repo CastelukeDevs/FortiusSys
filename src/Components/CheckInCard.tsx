@@ -1,8 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import moment from 'moment';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '@Redux/Store';
+import {
+  attendanceLoading,
+  attendanceReady,
+  checkIn,
+  checkOut,
+  selectAttendanceReady,
+  selectAttendanceStatus,
+  selectCurrentAttendance,
+  selectLastAttendance,
+  setImage,
+} from '@Redux/Reducers/AttendanceReducer';
 
 import {
   DefaultStyle,
@@ -16,15 +28,8 @@ import {getLocation} from '@Utilities/Tools/GeoLocation';
 
 import Button from '@Common/Button';
 import Icon from '@Common/Icon';
-import {
-  attendanceLoading,
-  checkIn,
-  checkOut,
-  selectAttendanceReady,
-  selectAttendanceStatus,
-  selectCurrentAttendance,
-  selectLastAttendance,
-} from '@Redux/Reducers/AttendanceReducer';
+import {PickerOption} from '@Utilities/Settings/ImagePicker';
+import {checkAndroidPermission} from '@Utilities/Tools/AndroidPermission';
 
 const TimeContainer = (props: {
   isCheckIn?: boolean;
@@ -72,32 +77,33 @@ const CheckInCard = () => {
   const currentSession = useSelector(selectCurrentAttendance);
   const lastSession = useSelector(selectLastAttendance);
 
-  const [sessionDuration, setSessionDuration] = useState('-');
-
   const currentTime = new Date();
   const currentDateStr = moment(currentTime).format('ddd, DD MMM YYYY');
-  const duration = moment(currentSession?.time).fromNow();
+  const currentDuration = moment(currentSession?.time).fromNow();
   const lastSessionDuration = moment(lastSession?.checkIn.time).to(
     lastSession?.checkOut.time,
   );
 
-  useEffect(() => {
-    const updateDuration = setInterval(() => {
-      setSessionDuration(duration);
-    }, 60_000);
-
-    if (isUserCheckedIn) {
-      updateDuration;
-    } else {
-      clearInterval(updateDuration);
-    }
-    return () => {
-      clearInterval(updateDuration);
-    };
-  }, [isUserCheckedIn]);
+  const getPicture = async () => {
+    await checkAndroidPermission('Camera');
+    return await launchCamera(PickerOption)
+      .then(res => res.assets?.[0].uri)
+      .catch(err => {
+        dispatch(attendanceReady());
+      });
+  };
 
   const onCheckInHandler = async () => {
     dispatch(attendanceLoading());
+
+    let imageUri;
+    if (!isUserCheckedIn) {
+      imageUri = await getPicture();
+      dispatch(setImage(imageUri));
+    }
+    if (imageUri === undefined && !isUserCheckedIn) {
+      return dispatch(attendanceReady());
+    }
     const geoLoc = await getLocation();
     const time = new Date();
     const newAttendance: IAttendanceTimeLoc = {
@@ -132,20 +138,22 @@ const CheckInCard = () => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingHorizontal: Dimens.padding,
           }}>
           {TimeContainer({
             isCheckIn: true,
             timeLoc: currentSession || lastSession?.checkIn,
           })}
-          {/* <TimeContainer isCheckIn timeLoc={currentSession} /> */}
           <View style={{justifyContent: 'center'}}>
             <Text
               style={[
                 ThemeText.SubTitle_Regular,
-                {color: ThemeColor.inactive},
+                {color: ThemeColor.inactive, textAlign: 'center'},
               ]}>
-              {isUserCheckedIn ? sessionDuration : lastSessionDuration}
+              {isUserCheckedIn
+                ? currentDuration
+                : lastSession !== undefined
+                ? lastSessionDuration
+                : '-'}
             </Text>
             <Text
               style={[
@@ -169,7 +177,6 @@ export default CheckInCard;
 
 const styles = StyleSheet.create({
   RootComponentContainer: {
-    // borderWidth: 1,
     borderRadius: Dimens.radius * 3,
     padding: Dimens.padding * 0.75,
     backgroundColor: ThemeColor.light,
@@ -187,5 +194,6 @@ const styles = StyleSheet.create({
   TimeContainer: {
     alignItems: 'center',
     width: 100,
+    // borderWidth: 1,
   },
 });

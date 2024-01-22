@@ -16,4 +16,5 @@ export type IAttendance = {
   checkIn: IAttendanceTimeLoc;
   checkOut: IAttendanceTimeLoc;
   attendanceTime: Date;
+  image?: string;
 };
