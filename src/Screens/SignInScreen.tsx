@@ -1,5 +1,6 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+
 import {IMainNavProp} from '../Routes/RouteTypes';
 
 const SignInScreen = ({navigation}: IMainNavProp<'SignInScreen'>) => {
