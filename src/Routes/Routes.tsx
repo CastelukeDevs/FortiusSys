@@ -13,6 +13,7 @@ import {PermissionsAndroid, StatusBar} from 'react-native';
 import {selectStatusBar} from '@Redux/Reducers/DefaultReducer';
 import {androidInitialPermissionCheck} from '@Utilities/Tools/AndroidPermission';
 import AttendanceListScreen from '@Screens/AttendanceListScreen';
+import AttendanceDetailScreen from '@Screens/AttendanceDetailScreen';
 
 const Stack = createNativeStackNavigator<IMainNav>();
 
@@ -63,6 +64,10 @@ const Routes = () => {
               <Stack.Screen
                 name="AttendanceListScreen"
                 component={AttendanceListScreen}
+              />
+              <Stack.Screen
+                name="AttendanceDetailScreen"
+                component={AttendanceDetailScreen}
               />
             </>
           )}

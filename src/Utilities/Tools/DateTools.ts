@@ -62,7 +62,7 @@ export type ITimeDuration = {
   days?: number;
   hours?: number;
   minutes?: number;
-  toString: () => string;
+  toString: (withSecond?: boolean) => string;
   elapsedHour: () => number;
 };
 /**

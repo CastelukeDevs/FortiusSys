@@ -9,6 +9,7 @@ import Icon from '@Common/Icon';
 type IHeaderProp = {
   onBack?: () => void;
   children?: ReactNode;
+  label?: string;
 };
 const Header = (props: IHeaderProp) => {
   const inset = useSafeAreaInsets();
@@ -37,7 +38,7 @@ const Header = (props: IHeaderProp) => {
           <View style={{flex: 1}} />
         )}
         <Text style={[ThemeText.H3_Bold, {textAlign: 'center'}]}>
-          Attendance
+          {props.label}
         </Text>
         <View style={{flex: 1}} />
       </View>
