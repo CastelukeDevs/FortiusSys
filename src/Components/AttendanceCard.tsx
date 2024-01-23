@@ -2,10 +2,9 @@ import FlexSeparator from '@Common/FlexSeparator';
 import Icon from '@Common/Icon';
 import LinesSeparator from '@Common/LinesSeparator';
 import TextPills from '@Common/TextPills';
-import {selectUser, selectUserEmployee} from '@Redux/Reducers/UserReducer';
+import {selectUser} from '@Redux/Reducers/UserReducer';
 import {IAttendance, IAttendanceTimeLoc} from '@Types/AttendanceTypes';
 import {
-  DefaultStyle,
   Dimens,
   Opacity,
   ThemeColor,
@@ -15,7 +14,7 @@ import {getScore} from '@Utilities/Tools/AttendanceScoringTools';
 import {ITimeDuration, getDuration} from '@Utilities/Tools/DateTools';
 import moment from 'moment';
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
 //Render Side content
@@ -70,6 +69,7 @@ const DurationContent = ({duration}: {duration?: ITimeDuration}) => (
 type IAttendanceCardProps = {
   attendance?: IAttendance;
   isWeekend?: boolean;
+  onDetailPressed?: (attendance: IAttendance) => void;
 };
 
 const AttendanceCard = (prop: IAttendanceCardProps) => {
@@ -87,6 +87,8 @@ const AttendanceCard = (prop: IAttendanceCardProps) => {
     attendance?.checkOut.time!,
     isWeekend,
   );
+
+  const onDetailPressHandler = () => {};
 
   return (
     <View style={styles.RootComponentContainer}>
@@ -115,7 +117,10 @@ const AttendanceCard = (prop: IAttendanceCardProps) => {
 
       <LinesSeparator />
 
-      <View style={styles.FooterContainer}>
+      <TouchableOpacity
+        style={styles.FooterContainer}
+        onPress={() => prop.onDetailPressed?.(attendance!)}
+        disabled={isEmpty}>
         <Text
           style={[
             ThemeText.SubTitle_Bold,
@@ -129,7 +134,7 @@ const AttendanceCard = (prop: IAttendanceCardProps) => {
           size={24}
           color={attendance ? ThemeColor.active : ThemeColor.inactive}
         />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

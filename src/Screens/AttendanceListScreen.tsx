@@ -28,6 +28,7 @@ import HeaderAddCalendar from '@Components/HeaderAddCalendar';
 import moment, {Moment} from 'moment';
 import AttendanceCard from '@Components/AttendanceCard';
 import {sortedHistoryByDate} from '@Utilities/Tools/AttendanceSorter';
+import {IAttendance} from '@Types/AttendanceTypes';
 
 const NoAttendanceIndicator = () => (
   <View
@@ -69,6 +70,10 @@ const AttendanceListScreen = ({
     navigation.goBack();
   };
 
+  const onAttendanceDetail = (itemAttendance: IAttendance) => {
+    navigation.navigate('AttendanceDetailScreen', itemAttendance);
+  };
+
   const ScrollViewOptions = {
     horizontal: true,
     snapToInterval: width,
@@ -80,7 +85,7 @@ const AttendanceListScreen = ({
 
   return (
     <View style={styles.RootScreenContainer}>
-      <Header onBack={onBackHandler}>
+      <Header onBack={onBackHandler} label="Attendance">
         <HeaderAddCalendar
           dateData={dateArray}
           selected={pageIndex}
@@ -111,7 +116,12 @@ const AttendanceListScreen = ({
                 data={item.attendances}
                 keyExtractor={(_, i) => i.toString()}
                 renderItem={({item: attendanceItem}) => {
-                  return <AttendanceCard attendance={attendanceItem} />;
+                  return (
+                    <AttendanceCard
+                      attendance={attendanceItem}
+                      onDetailPressed={onAttendanceDetail}
+                    />
+                  );
                 }}
                 ListEmptyComponent={() =>
                   !isToday
