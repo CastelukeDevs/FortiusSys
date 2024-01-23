@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import moment from 'moment';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera} from 'react-native-image-picker';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '@Redux/Store';
 import {
@@ -16,12 +16,7 @@ import {
   setImage,
 } from '@Redux/Reducers/AttendanceReducer';
 
-import {
-  DefaultStyle,
-  Dimens,
-  ThemeColor,
-  ThemeText,
-} from '@Utilities/Styles/GlobalStyles';
+import {Dimens, ThemeColor, ThemeText} from '@Utilities/Styles/GlobalStyles';
 import {IAttendanceTimeLoc} from '@Types/AttendanceTypes';
 
 import {getLocation} from '@Utilities/Tools/GeoLocation';
@@ -30,6 +25,8 @@ import Button from '@Common/Button';
 import Icon from '@Common/Icon';
 import {PickerOption} from '@Utilities/Settings/ImagePicker';
 import {checkAndroidPermission} from '@Utilities/Tools/AndroidPermission';
+import LinesSeparator from '@Common/LinesSeparator';
+import {getDuration} from '@Utilities/Tools/DateTools';
 
 const TimeContainer = (props: {
   isCheckIn?: boolean;
@@ -79,16 +76,16 @@ const CheckInCard = () => {
 
   const currentTime = new Date();
   const currentDateStr = moment(currentTime).format('ddd, DD MMM YYYY');
-  const currentDuration = moment(currentSession?.time).fromNow();
-  const lastSessionDuration = moment(lastSession?.checkIn.time).to(
-    lastSession?.checkOut.time,
-  );
+  const duration = !isUserCheckedIn
+    ? getDuration(lastSession?.checkIn.time!, lastSession?.checkOut.time!)
+    : getDuration(currentSession?.time!, new Date());
 
   const getPicture = async () => {
     await checkAndroidPermission('Camera');
     return await launchCamera(PickerOption)
       .then(res => res.assets?.[0].uri)
       .catch(err => {
+        console.log('Camera error:', err);
         dispatch(attendanceReady());
       });
   };
@@ -132,7 +129,7 @@ const CheckInCard = () => {
           disabled={!isAttendanceReady}
         />
       </View>
-      <View style={DefaultStyle.InvisLine} />
+      <LinesSeparator />
       <View style={styles.ContentContainer}>
         <View
           style={{
@@ -144,24 +141,10 @@ const CheckInCard = () => {
             timeLoc: currentSession || lastSession?.checkIn,
           })}
           <View style={{justifyContent: 'center'}}>
-            <Text
-              style={[
-                ThemeText.SubTitle_Regular,
-                {color: ThemeColor.inactive, textAlign: 'center'},
-              ]}>
-              {isUserCheckedIn
-                ? currentDuration
-                : lastSession !== undefined
-                ? lastSessionDuration
-                : '-'}
+            <Text style={[ThemeText.SubTitle_Regular, styles.TextDuration]}>
+              {duration.toString()}
             </Text>
-            <Text
-              style={[
-                ThemeText.SubTitle_Regular,
-                {color: ThemeColor.active, textAlign: 'center'},
-              ]}>
-              - - - - - - - -
-            </Text>
+            <LinesSeparator dashed />
           </View>
           {TimeContainer({
             isCheckIn: false,
@@ -185,15 +168,18 @@ const styles = StyleSheet.create({
   HeaderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: Dimens.padding,
   },
   ContentContainer: {
-    marginTop: Dimens.padding,
     justifyContent: 'space-between',
   },
   TimeContainer: {
     alignItems: 'center',
     width: 100,
     // borderWidth: 1,
+  },
+  TextDuration: {
+    color: ThemeColor.inactive,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });

@@ -130,8 +130,14 @@ export const DefaultStyle = StyleSheet.create({
   InvisLine: {
     // height: 2,
     opacity: 0.2,
+    borderTopWidth: 1,
     borderColor: ThemeColor.dark,
-    borderTopWidth: 2,
+  },
+  DashLine: {
+    opacity: 0.2,
+    borderTopWidth: 1,
+    borderColor: ThemeColor.dark,
+    borderStyle: 'dashed',
   },
 });
 

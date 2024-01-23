@@ -12,6 +12,7 @@ import {isUserReady, selectUserToken} from '@Redux/Reducers/UserReducer';
 import {PermissionsAndroid, StatusBar} from 'react-native';
 import {selectStatusBar} from '@Redux/Reducers/DefaultReducer';
 import {androidInitialPermissionCheck} from '@Utilities/Tools/AndroidPermission';
+import AttendanceListScreen from '@Screens/AttendanceListScreen';
 
 const Stack = createNativeStackNavigator<IMainNav>();
 
@@ -57,7 +58,13 @@ const Routes = () => {
           {!auth ? (
             <Stack.Screen name="SignInScreen" component={SignInScreen} />
           ) : (
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <>
+              <Stack.Screen name="HomeScreen" component={HomeScreen} />
+              <Stack.Screen
+                name="AttendanceListScreen"
+                component={AttendanceListScreen}
+              />
+            </>
           )}
         </Stack.Navigator>
       </NavigationContainer>

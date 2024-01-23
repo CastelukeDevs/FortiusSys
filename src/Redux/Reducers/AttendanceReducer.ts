@@ -1,6 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IAttendance, IAttendanceTimeLoc} from '@Types/AttendanceTypes';
+import AttendanceDummies from '@Utilities/Dummies/AttendanceDummies';
 
 export type IAttendanceInitialState = {
   isReady: boolean;
@@ -14,7 +15,7 @@ export type IAttendanceInitialState = {
 export const attendanceInitialState: IAttendanceInitialState = {
   isReady: true,
   isCheckedIn: false,
-  attendanceHistory: [],
+  attendanceHistory: [...(AttendanceDummies as unknown as IAttendance[])],
 };
 
 const AttendanceReducer = createSlice({

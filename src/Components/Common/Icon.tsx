@@ -17,6 +17,7 @@ enum IconList {
   'cash',
   'checkmark',
   'chevron-back',
+  'chevron-forward',
   'close',
   'desktop',
   'eye',
@@ -36,6 +37,7 @@ enum IconList {
   'remove-circle',
   'camera',
   'id-card',
+  'log-out',
 }
 
 export type IIconMode = keyof typeof IconMode;

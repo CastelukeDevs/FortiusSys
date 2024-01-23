@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   ModeOutlined: {
     borderWidth: 1,
     borderColor: ThemeColor.accent,
-    borderRadius: Dimens.radius,
+    borderRadius: Dimens.radius * 3,
   },
   LabelText: {
     textAlign: 'center',
