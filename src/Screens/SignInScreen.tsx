@@ -7,21 +7,24 @@ import {
   StatusBar,
 } from 'react-native';
 import {useAppDispatch} from '@Redux/Store';
+import {statusBarDark, statusBarLight} from '@Redux/Reducers/DefaultReducer';
+import {getUserData} from '@Redux/Reducers/UserReducer';
 
 import {IMainNavProp} from '@Routes/RouteTypes';
-import Logo from '@Common/Logo';
+
 import {
   Dimens,
   Opacity,
   ThemeColor,
   ThemeText,
 } from '@Utilities/Styles/GlobalStyles';
+
+import ValidateString from '@Utilities/Tools/ValidateString';
+
+import Logo from '@Common/Logo';
 import TextInput from '@Common/TextInput';
 import Button from '@Common/Button';
-import ValidateString from '@Utilities/Tools/ValidateString';
-import {getUserData} from '@Redux/Reducers/UserReducer';
 import {IIconName} from '@Common/Icon';
-import {statusBarDark, statusBarLight} from '@Redux/Reducers/DefaultReducer';
 
 const SignInScreen = ({navigation}: IMainNavProp<'SignInScreen'>) => {
   const dispatch = useAppDispatch();

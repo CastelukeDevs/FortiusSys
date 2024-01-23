@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '@Redux/Store';
+import {statusBarDark, statusBarLight} from '@Redux/Reducers/DefaultReducer';
 import {
   resetUserState,
   selectUser,
   selectUserCompany,
   selectUserEmployee,
 } from '@Redux/Reducers/UserReducer';
-import {statusBarDark, statusBarLight} from '@Redux/Reducers/DefaultReducer';
 
 import {
   Dimens,
@@ -17,30 +18,50 @@ import {
   ThemeText,
 } from '@Utilities/Styles/GlobalStyles';
 
+import Icon from '@Common/Icon';
 import Logo from '@Common/Logo';
 import Button from '@Common/Button';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Icon from '@Common/Icon';
-import AttendanceCard from '@Components/AttendanceCard';
+import CheckInCard from '@Components/CheckInCard';
+import {
+  resetAttendance,
+  selectAttendanceStatus,
+} from '@Redux/Reducers/AttendanceReducer';
+import {IMainNavProp} from '@Routes/RouteTypes';
+import {useIsFocused} from '@react-navigation/native';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: IMainNavProp<'HomeScreen'>) => {
   const inset = useSafeAreaInsets();
   const dispatch = useAppDispatch();
+  const focus = useIsFocused();
 
   const user = useSelector(selectUser);
   const employee = useSelector(selectUserEmployee);
   const company = useSelector(selectUserCompany);
+  const isSigned = useSelector(selectAttendanceStatus);
 
   useEffect(() => {
-    dispatch(statusBarLight());
+    if (focus) {
+      dispatch(statusBarLight());
+    } else {
+      dispatch(statusBarDark());
+    }
     return () => {
       dispatch(statusBarDark());
     };
-  }, []);
+  }, [focus]);
 
-  const onSignOut = () => {
+  const onSignOutHandler = () => {
     dispatch(resetUserState());
   };
+
+  const onResetHandler = () => {
+    dispatch(resetAttendance());
+  };
+
+  const onGoToAttendanceListHandler = () => {
+    navigation.navigate('AttendanceListScreen');
+  };
+
   return (
     <View style={styles.RootScreenContainer}>
       <View
@@ -71,10 +92,11 @@ const HomeScreen = () => {
             </Text>
           </View>
           <Icon
-            name="notifications"
+            name="log-out"
             mode="filled"
             size={24}
             color={ThemeColor.light}
+            onPress={onSignOutHandler}
           />
         </View>
       </View>
@@ -84,17 +106,25 @@ const HomeScreen = () => {
           <View style={{flex: 1}} />
         </View>
         <View style={{paddingHorizontal: Dimens.padding}}>
-          <AttendanceCard />
+          <CheckInCard />
         </View>
       </View>
       <View style={{flex: 1, padding: Dimens.padding, alignItems: 'center'}}>
-        <TouchableOpacity style={styles.IconButton}>
+        <TouchableOpacity
+          style={styles.IconButton}
+          onPress={onGoToAttendanceListHandler}>
           <Icon name="id-card" size={30} color={ThemeColor.accent} />
         </TouchableOpacity>
         <Text style={[ThemeText.SubTitle_Regular]}>Attendance</Text>
       </View>
       <View style={{padding: Dimens.padding}}>
-        <Button label="Sign Out" onPress={onSignOut} />
+        <Button
+          label="Sign Out"
+          onPress={onSignOutHandler}
+          mode="outlined"
+          icon={{name: 'log-out'}}
+        />
+        {/* <Button label="Reset" onPress={onResetHandler} /> */}
       </View>
     </View>
   );
