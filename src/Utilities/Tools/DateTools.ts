@@ -33,6 +33,7 @@ export type ICalendar = {
   day: IDayName;
   year: number;
   moment: Moment;
+  jsDate: Date;
 };
 
 export const extractDateData = (momentDate: Moment): ICalendar => {
@@ -42,6 +43,7 @@ export const extractDateData = (momentDate: Moment): ICalendar => {
     month: monthNames[momentDate.get('month')],
     year: momentDate.get('year'),
     moment: momentDate,
+    jsDate: momentDate.toDate(),
   };
 };
 
