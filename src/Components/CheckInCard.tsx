@@ -35,8 +35,8 @@ const TimeContainer = (props: {
   const label = props.isCheckIn ? 'Check In' : 'Check Out';
 
   const userSigned = props.timeLoc !== undefined;
-  const immediateBuilding =
-    props.timeLoc?.location.geoLocation?.address.building;
+  const address = props.timeLoc?.location.geoLocation?.address;
+  const immediateLocation = address?.building || address?.road;
 
   const signTime = userSigned
     ? moment(props.timeLoc?.time).format('hh:mm')
@@ -59,7 +59,7 @@ const TimeContainer = (props: {
         <Text
           numberOfLines={1}
           style={[ThemeText.Content_Regular, {color: ThemeColor.active}]}>
-          {userSigned ? immediateBuilding : '-'}
+          {userSigned ? immediateLocation : '-'}
         </Text>
       </View>
     </View>

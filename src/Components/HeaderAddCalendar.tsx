@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {
@@ -18,6 +18,8 @@ type IHeaderAddCalendarProps = {
 };
 const HeaderAddCalendar = (props: IHeaderAddCalendarProps) => {
   const selectedDate = props.dateData[props.selected];
+
+  const flatListRef = useRef<FlatList>(null);
 
   const GradientColorArr = [
     ThemeColor.dark + Opacity[5],
@@ -43,6 +45,13 @@ const HeaderAddCalendar = (props: IHeaderAddCalendarProps) => {
           end={{x: 0.2, y: 0}}
         />
         <FlatList
+          ref={flatListRef}
+          onContentSizeChange={() =>
+            flatListRef.current?.scrollToOffset({
+              animated: true,
+              offset: 50 * props.dateData.length,
+            })
+          }
           horizontal
           data={props.dateData}
           keyExtractor={date => date.moment.toString()}
@@ -83,7 +92,6 @@ const HeaderAddCalendar = (props: IHeaderAddCalendarProps) => {
             flex: 1,
           }}
           contentContainerStyle={styles.FlatlistContentContainer}
-          inverted
         />
       </View>
     </View>
@@ -95,6 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: Dimens.padding,
+    paddingTop: 0,
   },
   HeroContainer: {marginLeft: Dimens.padding / 3, marginRight: Dimens.padding},
   DateSelectionContainer: {
@@ -105,8 +114,10 @@ const styles = StyleSheet.create({
   DateItemContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: Dimens.padding,
-    paddingVertical: Dimens.padding / 3,
+    // paddingHorizontal: Dimens.padding,
+    // paddingVertical: Dimens.padding / 3,
+    height: 53,
+    width: 50,
   },
   DateItemSelected: {
     borderWidth: 2,

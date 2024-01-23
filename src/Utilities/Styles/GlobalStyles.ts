@@ -118,7 +118,18 @@ export const ThemeColor = {
   accent: '#6841C6',
   error: '#ff6347',
   success: '#3cb371',
+  warn: '#ffd700',
 } as const;
+
+export const ScoreColor = {
+  onTime: '#3cb371',
+  absent: '#b22222',
+  eco: '#9400d3',
+  overtime: '#daa520',
+  holiday: '#4361EE',
+  late: '#ff8c00',
+};
+
 /**
  * #4361EE
  * #70D6FF

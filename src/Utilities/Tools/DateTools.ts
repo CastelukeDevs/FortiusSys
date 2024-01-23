@@ -25,10 +25,12 @@ const dayNames = [
   'Saturday',
 ] as const;
 
+type IDayName = (typeof dayNames)[number];
+
 export type ICalendar = {
   date: number;
   month: string;
-  day: string;
+  day: IDayName;
   year: number;
   moment: Moment;
 };
@@ -52,7 +54,7 @@ export const getDateAtRange = (current: Date, range?: number) => {
     const selectDate = moment(current).subtract(day, 'd');
     dateArray.push(extractDateData(selectDate));
   }
-  const sorted = dateArray.sort((a, b) => a.date + b.date);
+  const sorted = dateArray.sort((a, b) => a.date - b.date);
   return sorted;
 };
 
@@ -63,6 +65,17 @@ export type ITimeDuration = {
   toString: () => string;
   elapsedHour: () => number;
 };
+/**
+ * Getting all duration between two dates
+ * @param clockIn
+ * @param clockOut
+ * @returns days number
+ * @returns hours number
+ * @returns minutes number
+ * @returns seconds number
+ * @returns toString function
+ * @returns elapsedHour function
+ */
 export const getDuration = (clockIn: Date, clockOut: Date): ITimeDuration => {
   const clockInMom = moment(clockIn);
   const clockOutMom = moment(clockOut);

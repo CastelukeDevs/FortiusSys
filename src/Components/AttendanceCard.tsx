@@ -11,25 +11,25 @@ import {
   ThemeColor,
   ThemeText,
 } from '@Utilities/Styles/GlobalStyles';
+import {getScore} from '@Utilities/Tools/AttendanceScoringTools';
 import {ITimeDuration, getDuration} from '@Utilities/Tools/DateTools';
 import moment from 'moment';
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
-type IAttendanceCardProps = {
-  attendance?: IAttendance;
-};
-
 //Render Side content
 const TimeLocation = (props: {timeLoc?: IAttendanceTimeLoc}) => {
-  const immediateBuilding =
-    props.timeLoc?.location.geoLocation?.address.building;
+  const address = props.timeLoc?.location.geoLocation?.address;
+  const immediateLocation = address?.building || address?.road;
+  // console.log('time parsed', props.timeLoc?.time);
+  const formattedTime = moment(props.timeLoc?.time).format('hh:mm');
+
   return (
     <View style={styles.TimeLocationContainer}>
       <FlexSeparator />
       <Text style={[ThemeText.H3_Bold, {color: ThemeColor.inactive, flex: 1}]}>
-        {props.timeLoc ? moment(props.timeLoc?.time).format('hh:mm') : '--:--'}
+        {props.timeLoc ? formattedTime : '--:--'}
       </Text>
       <View style={styles.LocationGroupContainer}>
         <Icon name="location" size={14} color={ThemeColor.active} />
@@ -37,7 +37,7 @@ const TimeLocation = (props: {timeLoc?: IAttendanceTimeLoc}) => {
           <Text
             numberOfLines={1}
             style={[ThemeText.SubTitle_Regular, styles.LocationText]}>
-            {immediateBuilding}
+            {immediateLocation}
           </Text>
         )}
       </View>
@@ -45,42 +45,48 @@ const TimeLocation = (props: {timeLoc?: IAttendanceTimeLoc}) => {
   );
 };
 
-const DotSeparator = () => {
-  return (
-    <View style={{justifyContent: 'center'}}>
-      <View style={styles.DotSeparator} />
-    </View>
-  );
-};
+const DotSeparator = () => (
+  <View style={{justifyContent: 'center'}}>
+    <View style={styles.DotSeparator} />
+  </View>
+);
 
 //Render Middle content
-const DurationContent = ({duration}: {duration?: ITimeDuration}) => {
-  return (
-    <View style={styles.DurationGroupContainer}>
-      {DotSeparator()}
-      <View style={{flex: 1}}>
-        <Text style={[ThemeText.Title_Bold, styles.DurationText]}>
-          {duration === undefined && '-'}
-          {duration?.toString()}
-        </Text>
-        <LinesSeparator dashed />
-        <View style={{flex: 1}} />
-      </View>
-      {DotSeparator()}
+const DurationContent = ({duration}: {duration?: ITimeDuration}) => (
+  <View style={styles.DurationGroupContainer}>
+    {DotSeparator()}
+    <View style={{flex: 1}}>
+      <Text style={[ThemeText.Title_Bold, styles.DurationText]}>
+        {duration === undefined && '-'}
+        {duration?.toString()}
+      </Text>
+      <LinesSeparator dashed />
+      <View style={{flex: 1}} />
     </View>
-  );
+    {DotSeparator()}
+  </View>
+);
+
+type IAttendanceCardProps = {
+  attendance?: IAttendance;
+  isWeekend?: boolean;
 };
 
 const AttendanceCard = (prop: IAttendanceCardProps) => {
-  const {attendance} = prop;
+  const {attendance, isWeekend} = prop;
   const isEmpty = attendance === undefined;
+
+  const user = useSelector(selectUser);
 
   const duration = getDuration(
     attendance?.checkIn.time!,
     attendance?.checkOut.time!,
   );
-
-  const user = useSelector(selectUser);
+  const attendanceScore = getScore(
+    attendance?.checkIn.time!,
+    attendance?.checkOut.time!,
+    isWeekend,
+  );
 
   return (
     <View style={styles.RootComponentContainer}>
@@ -98,7 +104,7 @@ const AttendanceCard = (prop: IAttendanceCardProps) => {
           </Text>
         </View>
 
-        <TextPills text={'Early Check Out'} />
+        <TextPills text={attendanceScore.score} color={attendanceScore.color} />
       </View>
 
       <View style={styles.ContentContainer}>
@@ -121,7 +127,7 @@ const AttendanceCard = (prop: IAttendanceCardProps) => {
         <Icon
           name={attendance ? 'chevron-forward' : 'close'}
           size={24}
-          color={attendance ? ThemeColor.active : ThemeColor.error}
+          color={attendance ? ThemeColor.active : ThemeColor.inactive}
         />
       </View>
     </View>
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
   },
   FooterContainer: {flexDirection: 'row', justifyContent: 'space-between'},
   FooterText: {color: ThemeColor.active, textAlignVertical: 'center'},
-  FooterTextNoDetail: {color: ThemeColor.error, textAlignVertical: 'center'},
+  FooterTextNoDetail: {color: ThemeColor.inactive, textAlignVertical: 'center'},
   TimeLocationContainer: {
     width: 90,
     alignItems: 'center',
