@@ -27,6 +27,7 @@ import {PickerOption} from '@Utilities/Settings/ImagePicker';
 import {checkAndroidPermission} from '@Utilities/Tools/AndroidPermission';
 import LinesSeparator from '@Common/LinesSeparator';
 import {getDuration} from '@Utilities/Tools/DateTools';
+import {toast} from '@backpackapp-io/react-native-toast';
 
 const TimeContainer = (props: {
   isCheckIn?: boolean;
@@ -86,6 +87,7 @@ const CheckInCard = () => {
       .then(res => res.assets?.[0].uri)
       .catch(err => {
         console.log('Camera error:', err);
+        toast.error('Check in cancelled');
         dispatch(attendanceReady());
       });
   };
@@ -110,8 +112,10 @@ const CheckInCard = () => {
     console.log('newAttendance', newAttendance);
 
     if (isUserCheckedIn) {
+      toast.success('Check-Out Success');
       return dispatch(checkOut(newAttendance));
     } else {
+      toast.success('Check-In Success');
       return dispatch(checkIn(newAttendance));
     }
   };

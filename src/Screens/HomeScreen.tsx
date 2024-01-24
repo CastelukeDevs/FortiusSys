@@ -54,12 +54,12 @@ const HomeScreen = ({navigation}: IMainNavProp<'HomeScreen'>) => {
     dispatch(resetUserState());
   };
 
-  const onResetHandler = () => {
-    dispatch(resetAttendance());
-  };
-
   const onGoToAttendanceListHandler = () => {
     navigation.navigate('AttendanceListScreen');
+  };
+
+  const onSettingPressHandler = () => {
+    navigation.navigate('SettingsScreen');
   };
 
   return (
@@ -92,11 +92,11 @@ const HomeScreen = ({navigation}: IMainNavProp<'HomeScreen'>) => {
             </Text>
           </View>
           <Icon
-            name="log-out"
+            name="settings"
             mode="filled"
             size={24}
             color={ThemeColor.light}
-            onPress={onSignOutHandler}
+            onPress={onSettingPressHandler}
           />
         </View>
       </View>
@@ -124,7 +124,6 @@ const HomeScreen = ({navigation}: IMainNavProp<'HomeScreen'>) => {
           mode="outlined"
           icon={{name: 'log-out'}}
         />
-        {/* <Button label="Reset" onPress={onResetHandler} /> */}
       </View>
     </View>
   );
