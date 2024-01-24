@@ -11,7 +11,8 @@
     "fresh": "npm start -- --reset-cache",
     "reset-watchman": "watchman watch-del .; watchman watch-project .",
     "fresh-all": "npm run reset-watchman; npm run fresh",
-    "install-ios": "npx pod-install ios"
+    "install-ios": "npx pod-install ios",
+    "build-apk": "cd android; ./gradlew assembleRelease"
   },
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.10.0",
