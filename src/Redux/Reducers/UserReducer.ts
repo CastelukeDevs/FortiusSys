@@ -3,6 +3,7 @@ import {IDefaultFetchState} from '@Types/FetchTypes';
 import {ICompanyData, IEmpolyeeData, IUser, IUserFetch} from '@Types/UserTypes';
 import APICall from '@Utilities/APIs/APICall';
 import {ICancelSignal} from '@Utilities/APIs/APIUtils';
+import {toast} from '@backpackapp-io/react-native-toast';
 
 export type IUserState = {
   user: IUser | null;
@@ -50,10 +51,12 @@ const UserReducer = createSliceWithThunks({
           state.error = null;
         },
         rejected: (state, action) => {
+          toast.error('Email or password invalid');
           state.status = 'error';
           state.error = {message: action.error.message!, error: action.error};
         },
         fulfilled: (state, action) => {
+          toast.success('Sign in Success');
           state.status = 'idle';
           state.error = null;
           state.user = action.payload.user;

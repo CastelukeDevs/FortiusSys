@@ -38,6 +38,7 @@ enum IconList {
   'camera',
   'id-card',
   'log-out',
+  'settings',
 }
 
 export type IIconMode = keyof typeof IconMode;

@@ -15,7 +15,8 @@ export type IAttendanceInitialState = {
 export const attendanceInitialState: IAttendanceInitialState = {
   isReady: true,
   isCheckedIn: false,
-  attendanceHistory: [...(AttendanceDummies as unknown as IAttendance[])],
+  attendanceHistory: [],
+  // attendanceHistory: [...(AttendanceDummies as unknown as IAttendance[])],
 };
 
 const AttendanceReducer = createSlice({
@@ -63,6 +64,9 @@ const AttendanceReducer = createSlice({
     setImage: (state, action) => {
       state.imageUri = action.payload;
     },
+    setAttendanceHistory: (state, action: PayloadAction<IAttendance[]>) => {
+      state.attendanceHistory = action.payload;
+    },
   },
 });
 
@@ -80,5 +84,6 @@ export const {
   attendanceLoading,
   attendanceReady,
   setImage,
+  setAttendanceHistory,
 } = AttendanceReducer.actions;
 export default AttendanceReducer.reducer;

@@ -6,6 +6,7 @@ export type IMainNav = {
   HomeScreen: undefined;
   AttendanceListScreen: undefined;
   AttendanceDetailScreen: IAttendance;
+  SettingsScreen: undefined;
 };
 
 export type IMainNavProp<T extends keyof IMainNav> = NativeStackScreenProps<
