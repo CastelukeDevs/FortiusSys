@@ -15,21 +15,21 @@ type IValidationCase = {[key: string]: IValidationCaseEntries};
 const ValidationCases = {
   empty: {
     test: (e: string) => e.length >= 1,
-    message: 'Tidak boleh kosong',
+    message: 'Cannot be empty',
   },
   validMail: {
     test: (e: string) => mailRegexValidation.test(e),
 
-    message: 'Email tidak valid',
+    message: 'Email invalid',
   },
   length: {
     test: (e: string) => e.length > passwordMinLength,
-    message: `Harus lebih dari ${passwordMinLength} karakter`,
+    message: `Must be more than ${passwordMinLength} character`,
   },
-  uppercase: {regex: /[A-Z]/, message: 'Minimal satu huruf besar'},
-  lowercase: {regex: /[a-z]/, message: 'Minimal satu huruf kecil'},
-  number: {regex: /[0-9]/, message: 'Minimal satu angka'},
-  special: {regex: /[^A-Za-z0-9]/, message: 'Minimal satu symbol'},
+  uppercase: {regex: /[A-Z]/, message: 'Must be one Uppercase'},
+  lowercase: {regex: /[a-z]/, message: 'Must be one Lowercase'},
+  number: {regex: /[0-9]/, message: 'Must be one number'},
+  special: {regex: /[^A-Za-z0-9]/, message: 'Must be one special character'},
 } as const satisfies IValidationCase;
 
 type IValidationCaseName = keyof typeof ValidationCases;

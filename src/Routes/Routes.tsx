@@ -15,6 +15,7 @@ import {androidInitialPermissionCheck} from '@Utilities/Tools/AndroidPermission'
 import AttendanceListScreen from '@Screens/AttendanceListScreen';
 import AttendanceDetailScreen from '@Screens/AttendanceDetailScreen';
 import SettingsScreen from '@Screens/SettingsScreen';
+import {Toasts} from '@backpackapp-io/react-native-toast';
 
 const Stack = createNativeStackNavigator<IMainNav>();
 
@@ -75,6 +76,7 @@ const Routes = () => {
           )}
         </Stack.Navigator>
       </NavigationContainer>
+      <Toasts />
     </SafeAreaProvider>
   );
 };
